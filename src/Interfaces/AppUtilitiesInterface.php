@@ -25,7 +25,7 @@ interface AppUtilitiesInterface {
    *
    * @param string $route
    * @param array $params
-   * @param $referenceType
+   * @param int $referenceType
    * @return string
    */
   public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
