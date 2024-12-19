@@ -7,11 +7,22 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
 interface AppUtilitiesInterface {
   
+  /**
+   * Generates a URL from the given route.
+   *
+   * @param string $route
+   * @param array $params
+   * @param $referenceType
+   * @return string
+   */
+  public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
+
   /**
    * Gets the Symfony\Contracts\Cache\CacheInterface instance.
    *
@@ -37,6 +48,14 @@ interface AppUtilitiesInterface {
    */
   public function getLogger(string $name = 'default', ?string $logPath = null): LoggerInterface;
   
+  /**
+   * Gets a parameter value.
+   *
+   * @param string $name
+   * @return mixed
+   */
+  public function getParameter(string $name): mixed;
+
   /**
    * Gets the Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface instance.
    *
@@ -64,4 +83,13 @@ interface AppUtilitiesInterface {
    * @return TwigEnvironment
    */
   public function getTwig(): TwigEnvironment;
+
+  /**
+   * Sets a parameter value.
+   *
+   * @param string $name
+   * @param mixed $value
+   * @return void
+   */
+  public function setParameter(string $name, mixed $value): void;
 }

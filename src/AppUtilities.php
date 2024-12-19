@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -63,6 +64,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    * @var \Twig\Environment $twig
    */
   private TwigEnvironment $twig;
+
+  /**
+   * The Symfony\Component\Routing\Generator\UrlGeneratorInterface definition.
+   * 
+   * @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator
+   */
+  private UrlGeneratorInterface $urlGenerator;
   
   public function __construct(
     CacheInterface $cache,
@@ -72,6 +80,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     RequestStack $requestStack,
     TranslatorInterface $translator,
     TwigEnvironment $twig,
+    UrlGeneratorInterface $urlGenerator,
   ) {
     $this->cache = $cache;
     $this->entityManager = $entityManager;
@@ -80,6 +89,14 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     $this->requestStack = $requestStack;
     $this->translator = $translator;
     $this->twig = $twig;
+    $this->urlGenerator = $urlGenerator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string {
+    return $this->urlGenerator->generate($route, $params, $referenceType);
   }
 
   /**
@@ -112,6 +129,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
+  public function getParameter(string $name): mixed {
+    return $this->params->get($name);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getParams(): ParameterBagInterface {
     return $this->params;
   }
@@ -135,6 +159,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    */
   public function getTwig(): TwigEnvironment {
     return $this->twig;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParameter(string $name, mixed $value): void {
+    $this->params->set($name, $value);
   }
 
   /**
