@@ -95,6 +95,22 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
+  public static function getSubscribedServices(): array {
+    return [
+      'cache' => CacheInterface::class,
+      'entityManager' => EntityManagerInterface::class,
+      'logger' => LoggerInterface::class,
+      //'mailer' => TransportInterface::class,
+      'params' => ParameterBagInterface::class,
+      //'security' => Security::class,
+      'translator' => TranslatorInterface::class,
+      'twig' => TwigEnvironment::class,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string {
     return $this->urlGenerator->generate($route, $params, $referenceType);
   }

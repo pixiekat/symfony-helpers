@@ -21,6 +21,13 @@ interface AppUtilitiesInterface {
   public const DEFAULT_LOGGER_NAME = 'default';
 
   /**
+   * Calls getSubscribedServices().
+   *
+   * @return array
+   */
+  public static function getSubscribedServices(): array;
+
+  /**
    * Generates a URL from the given route.
    *
    * @param string $route
