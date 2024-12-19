@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
@@ -62,6 +63,13 @@ interface AppUtilitiesInterface {
    */
   public function getLogger(string $name = 'default', ?string $logPath = null): LoggerInterface;
   
+  /**
+   * Gets the Symfony\Component\Mailer\Transport\TransportInterface instance.
+   *
+   * @return TransportInterface
+   */
+  public function getMailer(): TransportInterface;
+
   /**
    * Gets a parameter value.
    *

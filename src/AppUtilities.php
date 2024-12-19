@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
@@ -36,6 +37,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    * @var \Psr\Log\LoggerInterface $defaultLogger
    */
   private ?LoggerInterface $defaultLogger = null;
+
+  /**
+   * The Symfony\Component\Mailer\Transport\TransportInterface definition.
+   * 
+   * @var \Symfony\Component\Mailer\Transport\TransportInterface $mailer
+   */
+  private TransportInterface $mailer;
 
   /**
    * The Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface definition.
@@ -76,6 +84,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     CacheInterface $cache,
     EntityManagerInterface $entityManager,
     LoggerInterface $defaultLogger = null,
+    TransportInterface $mailer,
     ParameterBagInterface $params,
     RequestStack $requestStack,
     TranslatorInterface $translator,
@@ -85,6 +94,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     $this->cache = $cache;
     $this->entityManager = $entityManager;
     $this->defaultLogger = $defaultLogger ?: $this->createDefaultLogger();
+    $this->mailer = $mailer;
     $this->params = $params;
     $this->requestStack = $requestStack;
     $this->translator = $translator;
@@ -100,7 +110,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
       'cache' => CacheInterface::class,
       'entityManager' => EntityManagerInterface::class,
       'logger' => LoggerInterface::class,
-      //'mailer' => TransportInterface::class,
+      'mailer' => TransportInterface::class,
       'params' => ParameterBagInterface::class,
       //'security' => Security::class,
       'translator' => TranslatorInterface::class,
@@ -140,6 +150,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
       $logPath = __DIR__ . "/../../var/log/{$name}.log";
     }
     return $this->createLogger($name, $logPath);
+  }
+  
+  /**
+   * {@inheritdoc}
+   */
+  public function getMailer(): TransportInterface {
+    return $this->mailer;
   }
 
   /**
