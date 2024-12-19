@@ -116,8 +116,8 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
-  public function getLogger(string $name = 'default', ?string $logPath = null): LoggerInterface {
-    if ($name === 'default') {
+  public function getLogger(string $name = self::DEFAULT_LOGGER_NAME, ?string $logPath = null): LoggerInterface {
+    if ($name === self::DEFAULT_LOGGER_NAME) {
       return $this->defaultLogger;
     }
     if (is_null($logPath) || empty($logPath)) {

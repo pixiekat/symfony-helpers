@@ -14,6 +14,13 @@ use Twig\Environment as TwigEnvironment;
 interface AppUtilitiesInterface {
   
   /**
+   * Defines the default logger name.
+   * 
+   * @var string DEFAULT_LOGGER_NAME
+   */
+  public const DEFAULT_LOGGER_NAME = 'default';
+
+  /**
    * Generates a URL from the given route.
    *
    * @param string $route
