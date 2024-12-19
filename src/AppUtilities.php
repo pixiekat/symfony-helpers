@@ -4,6 +4,8 @@ namespace Pixiekat\SymfonyHelpers;
 
 use Pixiekat\SymfonyHelpers\Interfaces;
 use Doctrine\ORM\EntityManagerInterface;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
