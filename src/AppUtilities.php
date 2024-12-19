@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
 class AppUtilities implements Interfaces\AppUtilitiesInterface {
@@ -50,6 +51,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   private RequestStack $requestStack;
 
   /**
+   * The Symfony\Contracts\Translation\TranslatorInterface definition.
+   * 
+   * @var \Symfony\Contracts\Translation\TranslatorInterface $translator
+   */
+  private TranslatorInterface $translator;
+
+  /**
    * The Twig\Environment definition.
    *
    * @var \Twig\Environment $twig
@@ -62,6 +70,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     LoggerInterface $defaultLogger = null,
     ParameterBagInterface $params,
     RequestStack $requestStack,
+    TranslatorInterface $translator,
     TwigEnvironment $twig,
   ) {
     $this->cache = $cache;
@@ -69,6 +78,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     $this->defaultLogger = $defaultLogger ?: $this->createDefaultLogger();
     $this->params = $params;
     $this->requestStack = $requestStack;
+    $this->translator = $translator;
     $this->twig = $twig;
   }
 
@@ -111,6 +121,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    */
   public function getRequest(): RequestStack {
     return $this->requestStack;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTranslator(): TranslatorInterface {
+    return $this->translator;
   }
 
   /**

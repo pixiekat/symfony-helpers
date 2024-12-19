@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
 interface AppUtilitiesInterface {
@@ -49,6 +50,13 @@ interface AppUtilitiesInterface {
    * @return RequestStack
    */
   public function getRequest(): RequestStack;
+
+  /**
+   * Gets the Symfony\Contracts\Translation\TranslatorInterface instance.
+   *
+   * @return TranslatorInterface
+   */
+  public function getTranslator(): TranslatorInterface;
   
   /**
    * Gets the Twig\Environment instance.
