@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -49,9 +50,9 @@ interface AppUtilitiesInterface {
   /**
    * Gets the current user.
    *
-   * @return User|null
+   * @return UserInterface|null
    */
-  public function getCurrentUser(): ?User;
+  public function getCurrentUser(): ?UserInterface;
 
   /**
    * Gets the Doctrine\ORM\EntityManagerInterface instance.

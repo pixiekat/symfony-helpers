@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as TwigEnvironment;
 
@@ -145,8 +146,8 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
-  public function getCurrentUser(): ?User {
-    return $this->security->getUser() ?? null;
+  public function getCurrentUser(): ?UserInterface {
+    return $this->security->getUser() instanceof UserInterface ? $this->security->getUser() : null;
   }
 
   /**
