@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -60,6 +61,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   private RequestStack $requestStack;
 
   /**
+   * The Symfony\Bundle\SecurityBundle\Security definition.
+   * 
+   * @var \Symfony\Bundle\SecurityBundle\Security $security
+   */
+  private Security $security;
+
+  /**
    * The Symfony\Contracts\Translation\TranslatorInterface definition.
    * 
    * @var \Symfony\Contracts\Translation\TranslatorInterface $translator
@@ -87,6 +95,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     TransportInterface $mailer,
     ParameterBagInterface $params,
     RequestStack $requestStack,
+    Security $security,
     TranslatorInterface $translator,
     TwigEnvironment $twig,
     UrlGeneratorInterface $urlGenerator,
@@ -97,6 +106,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
     $this->mailer = $mailer;
     $this->params = $params;
     $this->requestStack = $requestStack;
+    $this->security = $security;
     $this->translator = $translator;
     $this->twig = $twig;
     $this->urlGenerator = $urlGenerator;
@@ -112,7 +122,7 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
       'logger' => LoggerInterface::class,
       'mailer' => TransportInterface::class,
       'params' => ParameterBagInterface::class,
-      //'security' => Security::class,
+      'security' => Security::class,
       'translator' => TranslatorInterface::class,
       'twig' => TwigEnvironment::class,
     ];
@@ -130,6 +140,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    */
   public function getCache(): CacheInterface {
     return $this->cache;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCurrentUser(): ?User {
+    return $this->security->getUser() ?? null;
   }
 
   /**
@@ -178,6 +195,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    */
   public function getRequest(): RequestStack {
     return $this->requestStack;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSecurity(): Security {
+    return $this->security;
   }
 
   /**

@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -45,6 +46,13 @@ interface AppUtilitiesInterface {
    */
   public function getCache(): CacheInterface;
   
+  /**
+   * Gets the current user.
+   *
+   * @return User|null
+   */
+  public function getCurrentUser(): ?User;
+
   /**
    * Gets the Doctrine\ORM\EntityManagerInterface instance.
    *
@@ -92,6 +100,13 @@ interface AppUtilitiesInterface {
    */
   public function getRequest(): RequestStack;
 
+  /**
+   * Gets the Symfony\Bundle\SecurityBundle\Security instance.
+   * 
+   * @return Security
+   */
+  public function getSecurity(): Security;
+  
   /**
    * Gets the Symfony\Contracts\Translation\TranslatorInterface instance.
    *
