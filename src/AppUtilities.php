@@ -14,11 +14,46 @@ use Twig\Environment as TwigEnvironment;
 
 class AppUtilities implements Interfaces\AppUtilitiesInterface {
   
+  /**
+   * The Symfony\Contracts\Cache\CacheInterface definition.
+   *
+   * @var \Symfony\Contracts\Cache\CacheInterface $cache
+   */
   private CacheInterface $cache;
+
+  /**
+   * The Doctrine\ORM\EntityManagerInterface definition.
+   *
+   * @var \Doctrine\ORM\EntityManagerInterface $entityManager
+   */
   private EntityManagerInterface $entityManager;
-  private LoggerInterface $logger;
+
+  /**
+   * The Psr\Log\LoggerInterface definition.
+   *
+   * @var \Psr\Log\LoggerInterface $defaultLogger
+   */
+  private ?LoggerInterface $defaultLogger = null;
+
+  /**
+   * The Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface definition.
+   *
+   * @var \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $params
+   */
   private ParameterBagInterface $params;
+
+  /**
+   * The Symfony\Component\HttpFoundation\RequestStack definition.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   */
   private RequestStack $requestStack;
+
+  /**
+   * The Twig\Environment definition.
+   *
+   * @var \Twig\Environment $twig
+   */
   private TwigEnvironment $twig;
   
   public function __construct(
