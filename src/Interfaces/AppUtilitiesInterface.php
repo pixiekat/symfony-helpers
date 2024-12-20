@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Pixiekat\SymfonyHelpers\Interfaces;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Proxy\Proxy;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -31,6 +32,19 @@ interface AppUtilitiesInterface {
   public static function getSubscribedServices(): array;
 
   /**
+   * Deprecated. Use getCsvFromArray() instead.
+   * 
+   * @param array $data
+   * @param string $delimiter
+   * @param string $enclosure
+   * @param string $escape
+   * 
+   * @deprecated since version 1.0.0
+   * @return string
+   */
+  public function arrayToCsv(array $data, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): string;
+
+  /**
    * Generates a URL from the given route.
    *
    * @param string $route
@@ -41,12 +55,38 @@ interface AppUtilitiesInterface {
   public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
 
   /**
+   * Returns a default LoggerInterface instance with name 'app'.
+   *
+   * @return LoggerInterface
+   */
+  public function getAppLogger(): LoggerInterface;
+
+  /**
+   * Returns a default LoggerInterface instance with name 'audit'.
+   *
+   * @return LoggerInterface
+   */
+  public function getAuditLogger(): LoggerInterface;
+
+  /**
    * Gets the Symfony\Contracts\Cache\CacheInterface instance.
    *
    * @return CacheInterface
    */
   public function getCache(): CacheInterface;
   
+  /**
+   * Generates a CSV string from the given array.
+   * 
+   * @param array $data
+   * @param string $delimiter
+   * @param string $enclosure
+   * @param string $escape
+   * 
+   * @return string
+   */
+  public function getCsvFromArray(array $data, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): string;
+
   /**
    * Gets the current user.
    *
@@ -121,6 +161,14 @@ interface AppUtilitiesInterface {
    * @return TwigEnvironment
    */
   public function getTwig(): TwigEnvironment;
+
+  /**
+   * Initializes and loads a lazy-loaded object.
+   *
+   * @param object $object
+   * @return void
+   */
+  public function initializeObject(object $object): void;
 
   /**
    * Sets a parameter value.

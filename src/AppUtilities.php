@@ -4,6 +4,7 @@ namespace Pixiekat\SymfonyHelpers;
 
 use Pixiekat\SymfonyHelpers\Interfaces;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Proxy\Proxy;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
@@ -132,6 +133,13 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
+  public function arrayToCsv(array $data, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): string {
+    return $this->getCsvFromArray($data, $delimiter, $enclosure, $escape);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function generateUrl(string $route, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string {
     return $this->urlGenerator->generate($route, $params, $referenceType);
   }
@@ -139,8 +147,36 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
   /**
    * {@inheritdoc}
    */
+  public function getAppLogger(): LoggerInterface {
+    return $this->getLogger('default')->withName('app');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAuditLogger(): LoggerInterface {
+    return $this->getLogger('default')->withName('audit');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCache(): CacheInterface {
     return $this->cache;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCsvFromArray(array $data, string $delimiter = ',', string $enclosure = '"', string $escape = '\\'): string {
+    $output = fopen('php://temp', 'r+');
+    foreach ($data as $row) {
+      fputcsv($output, $row, $delimiter, $enclosure, $escape);
+    }
+    rewind($output);
+    $csv = stream_get_contents($output);
+    fclose($output);
+    return $csv;
   }
 
   /**
@@ -217,6 +253,16 @@ class AppUtilities implements Interfaces\AppUtilitiesInterface {
    */
   public function getTwig(): TwigEnvironment {
     return $this->twig;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function initializeObject(object $object): void {
+    if ($object instanceof Proxy) {
+      $object->__load();
+      $this->getEntityManager()->initializeObject($object);
+    }
   }
 
   /**
